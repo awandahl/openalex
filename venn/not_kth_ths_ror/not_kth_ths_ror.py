@@ -8,7 +8,7 @@ from datetime import datetime
 import pandas as pd
 
 # Configuration settings
-START_YEAR = 2024
+START_YEAR = 2023
 END_YEAR = 2024
 EMAIL = "aw@kth.se"
 API_KEY = None  # Add your API key if you have one
@@ -43,23 +43,52 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
     print(f"Already processed years: {processed_years}")
 
     kth_ror = "https://ror.org/026vcq606"
-    erroneous_ror = "https://ror.org/0519hrc61"
+    ths_ror = "https://ror.org/0519hrc61"
 
     search_terms = (
-        '"KTH" OR "royal institute" OR "royal institut" OR "royal inst." OR '
-        '"royal inst" OR "r. inst. of tech." OR "r. inst. of technol." OR '
-        '"r. inst. of technol" OR "r inst. of technol." OR "r inst of technol" OR '
-        '"royalinstitute" OR "royal institite" OR "royal lnstitufe" OR '
-        '"royal lnstltute" OR "royal insitute" OR "royal istitute" OR '
-        '"royal inititute" OR "royal institution" OR "royal insititu" OR '
-        '"royal institue" OR "royal lnstitute" OR "royal in-stitute" OR '
-        '"royal intitute" OR "royal of technology" OR "royal tech" OR '
-        '"royal university of technology" OR "royal college of technology" OR '
-        '"royal swedish institute of technology" OR "royal school of technology" OR '
-        '"roy inst" OR "institute of technology stockholm" OR "kungliga tekniska" OR '
-        '"kungl tekniska" OR "kgl tekniska" OR "alfvén" OR "alfven" OR '
-        '"s-100 44 stockholm" OR "s-10044 stockholm" OR "se-100 44 stockholm" OR '
-        '"se-10044 stockholm" OR "10044 stockholm"'
+        '("KTH" OR '
+        '(("roy inst" OR '
+        '"royal in-stitute" OR '
+        '"royal inititute" OR '
+        '"royal institut" OR '
+        '"royal institute" OR '
+        '"royal institite" OR '
+        '"royal institution" OR '
+        '"royal institue" OR '
+        '"royal insititu" OR '
+        '"royal insitute" OR '
+        '"royal inst" OR '
+        '"royal inst." OR '
+        '"royal intitute" OR '
+        '"royal istitute" OR '
+        '"royal lnstitute" OR '
+        '"royal lnstitufe" OR '
+        '"royal lnstltute") AND'
+        '"tech") OR '
+        '(("kgl" OR '
+        '"kgl." OR '
+        '"kungl" OR '
+        '"kungl." OR '
+        '"kungliga") AND '
+        '"tekn") OR '
+        '"r inst of technol" OR '
+        '"r inst. of technol." OR '
+        '"r. inst. of tech." OR '
+        '"r. inst. of technol" OR '
+        '"r. inst. of technol." OR '
+        '"royal tech" OR '
+        '"institute of technology stockholm" OR '
+        '"royal of technology" OR '
+        '"royal school of technology" OR '
+        '"royal swedish institute of technology" OR '
+        '"royal university of technology" OR '
+        '"royal college of technology" OR '
+        '"royalinstitute" OR '
+        '"alfven" OR '
+        '"alfvén" OR '
+        '"10044 stockholm" OR '
+        '"100 44 stockholm") NOT '
+        '"khyber"'
     )
 
     for year in range(start_year, end_year + 1):
@@ -71,7 +100,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
             "filter": f"raw_affiliation_strings.search:({search_terms}),"
                       f"publication_year:{year},"
                       f"institutions.ror:!{kth_ror},"
-                      f"institutions.ror:!{erroneous_ror}",
+                      f"institutions.ror:!{ths_ror}",
             "per-page": 200,
             "cursor": "*"
         }
