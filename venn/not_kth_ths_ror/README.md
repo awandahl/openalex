@@ -1,3 +1,7 @@
+
+https://www.perplexity.ai/search/i-have-a-python-script-that-i-sa9KlrOARfGRNpHsClHwKw#45
+
+
 # KTH Affiliation Extraction Script
 
 This script is designed to extract and analyze potential KTH (Royal Institute of Technology) affiliations from the OpenAlex database. It focuses on finding affiliations that might be related to KTH but are not officially associated with KTH's ROR ID.
