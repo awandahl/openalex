@@ -9,9 +9,9 @@ import pandas as pd
 
 # Configuration settings
 START_YEAR = 2023
-END_YEAR = 2024
+END_YEAR = 2023
 EMAIL = "aw@kth.se"
-API_KEY = None  # Add your API key if you have one
+API_KEY = None # Add your API key if you have one
 
 def get_latest_csv_file(prefix):
     csv_files = [f for f in os.listdir('.') if f.startswith(prefix) and f.endswith('.csv')]
@@ -26,6 +26,60 @@ def get_processed_years(filename):
     except Exception as e:
         print(f"Error reading file {filename}: {e}")
         return set()
+
+def matches_search_terms(affiliation):
+    affiliation = affiliation.lower()
+    return (
+        "kth" in affiliation or
+        (
+            (
+                "roy inst" in affiliation or
+                "royal in-stitute" in affiliation or
+                "royal inititute" in affiliation or
+                "royal institut" in affiliation or
+                "royal institute" in affiliation or
+                "royal institite" in affiliation or
+                "royal institution" in affiliation or
+                "royal institue" in affiliation or
+                "royal insititu" in affiliation or
+                "royal insitute" in affiliation or
+                "royal inst" in affiliation or
+                "royal inst." in affiliation or
+                "royal intitute" in affiliation or
+                "royal istitute" in affiliation or
+                "royal lnstitute" in affiliation or
+                "royal lnstitufe" in affiliation or
+                "royal lnstltute" in affiliation
+            ) and "tech" in affiliation
+        ) or
+        (
+            (
+                "kgl" in affiliation or
+                "kgl." in affiliation or
+                "kungl" in affiliation or
+                "kungl." in affiliation or
+                "kungliga" in affiliation
+            ) and "tekn" in affiliation
+        ) or
+        "r inst of technol" in affiliation or
+        "r inst. of technol." in affiliation or
+        "r. inst. of tech." in affiliation or
+        "r. inst. of technol" in affiliation or
+        "r. inst. of technol." in affiliation or
+        "royal tech" in affiliation or
+        "institute of technology stockholm" in affiliation or
+        "royal of technology" in affiliation or
+        "royal school of technology" in affiliation or
+        "royal swedish institute of technology" in affiliation or
+        "royal university of technology" in affiliation or
+        "royal college of technology" in affiliation or
+        "royalinstitute" in affiliation or
+        "alfven" in affiliation or
+        "alfvén" in affiliation or
+        "10044 stockholm" in affiliation or
+        "100 44 stockholm" in affiliation
+    ) and "khyber" not in affiliation
+
 
 def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
     base_url = "https://api.openalex.org/works"
@@ -43,7 +97,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
     print(f"Already processed years: {processed_years}")
 
     kth_ror = "https://ror.org/026vcq606"
-    ths_ror = "https://ror.org/0519hrc61"
+    erroneous_ror = "https://ror.org/0519hrc61"
 
     search_terms = (
         '("KTH" OR '
@@ -100,7 +154,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
             "filter": f"raw_affiliation_strings.search:({search_terms}),"
                       f"publication_year:{year},"
                       f"institutions.ror:!{kth_ror},"
-                      f"institutions.ror:!{ths_ror}",
+                      f"institutions.ror:!{erroneous_ror}",
             "per-page": 200,
             "cursor": "*"
         }
@@ -126,7 +180,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
                 for authorship in work.get('authorships', []):
                     raw_affiliations = authorship.get('raw_affiliation_strings', [])
                     for raw_affiliation in raw_affiliations:
-                        if raw_affiliation and any(term.lower() in raw_affiliation.lower() for term in search_terms.replace('"', '').split(' OR ')):
+                        if raw_affiliation and matches_search_terms(raw_affiliation):
                             affiliations.append((raw_affiliation.lower(), year, work['id']))
 
             total_processed += len(results)
@@ -138,7 +192,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
             else:
                 break
 
-            time.sleep(1)  # To avoid hitting rate limits
+            time.sleep(1) # To avoid hitting rate limits
 
         all_affiliations.extend(affiliations)
         processed_years.add(year)
@@ -155,7 +209,6 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
     else:
         print("No new potential affiliations found.")
         return [], [], [], []
-
 
 def save_filtered_affiliations(filtered_affiliation_counts):
     latest_csv = get_latest_csv_file('filtered_affiliations_')
@@ -183,30 +236,9 @@ if __name__ == "__main__":
     for affiliation, count in Counter(affiliations).most_common(20):
         print(f"{count}: {affiliation}")
 
-    # Read the filter strings from a text file
-    with open('filter_strings.txt', 'r') as file:
-        filter_strings = [line.strip().lower() for line in file.readlines()]
-
-    # Filter out affiliations
-    filtered_affiliations = [aff for aff in affiliations if not any(f in aff.lower() for f in filter_strings)]
-
     print(f"\nTotal affiliations: {len(affiliations)}")
-    print(f"Filtered affiliations: {len(filtered_affiliations)}")
-
-    # Get the most common filtered affiliations
-    filtered_affiliation_counts = Counter(filtered_affiliations)
-    common_filtered_affiliations = filtered_affiliation_counts.most_common(100)
-
-    print("\nTop 100 most common filtered affiliation strings:")
-    for affiliation, count in common_filtered_affiliations:
-        print(f"{count}: {affiliation}")
-
-    # Save all filtered affiliations
-    save_filtered_affiliations(filtered_affiliation_counts)
-    print("\nAll filtered affiliations have been saved.")
 
     # Save all affiliations to a CSV file
     df = pd.DataFrame({'Raw Affiliation': affiliations, 'Year': years, 'Count': counts, 'Work ID': work_ids})
     df.to_csv(f'all_potential_kth_affiliations_{START_YEAR}-{END_YEAR}_{datetime.now().strftime("%Y%m%d")}.csv', index=False)
     print(f"\nSaved all potential KTH affiliations to CSV file.")
-
