@@ -96,8 +96,8 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
         processed_years = get_processed_years(latest_csv)
     print(f"Already processed years: {processed_years}")
 
-    kth_ror = "https://ror.org/026vcq606"
-    erroneous_ror = "https://ror.org/0519hrc61"
+    kth_ror = "https://ror.org/026vcq606" # KTH
+    ths_ror = "https://ror.org/0519hrc61" # Tekniska Högskolans Studentkår
 
     search_terms = (
         '("KTH" OR '
