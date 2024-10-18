@@ -142,7 +142,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
         '"alfvén" OR '
         '"10044 stockholm" OR '
         '"100 44 stockholm") NOT '
-        '"khyber"'
+        '("khyber" OR "peshawar" OR "mcmaster")'
     )
 
     for year in range(start_year, end_year + 1):
