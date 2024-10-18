@@ -154,7 +154,7 @@ def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
             "filter": f"raw_affiliation_strings.search:({search_terms}),"
                       f"publication_year:{year},"
                       f"institutions.ror:!{kth_ror},"
-                      f"institutions.ror:!{erroneous_ror}",
+                      f"institutions.ror:!{ths_ror}",
             "per-page": 200,
             "cursor": "*"
         }
