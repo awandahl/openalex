@@ -78,7 +78,7 @@ def matches_search_terms(affiliation):
         "alfvén" in affiliation or
         "10044 stockholm" in affiliation or
         "100 44 stockholm" in affiliation
-    ) and "khyber" not in affiliation
+    ) and "khyber" not in affiliation and "peshawar" not in affiliation and "mcmaster" not in affiliation
 
 
 def get_raw_affiliations(start_year, end_year, email=None, api_key=None):
