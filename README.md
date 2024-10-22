@@ -1,7 +1,50 @@
 # openalex
 
-https://openalex.org/works?filter=raw_affiliation_strings.search:("KTH" OR (("roy inst" OR "royal in-stitute" OR "royal inititute" OR "royal institut" OR "royal institute" OR "royal institite" OR "royal institution" OR "royal institue" OR "royal insititu" OR "royal insitute" OR "royal inst" OR "royal inst." OR "royal intitute" OR "royal istitute" OR "royal lnstitute" OR "royal lnstitufe" OR "royal lnstltute") AND "tech") OR (("kgl" OR "kgl." OR "kungl" OR "kungl." OR "kungliga") AND "tekn") OR "r inst of technol" OR "r inst. of technol." OR "r. inst. of tech." OR "r. inst. of technol" OR "r. inst. of technol." OR "royal tech" OR "institute of technology stockholm" OR "royal of technology" OR "royal school of technology" OR "royal swedish institute of technology" OR "royal university of technology" OR "royal college of technology" OR "royalinstitute" OR "alfven" OR "alfvén" OR "10044 stockholm" OR "100 44 stockholm") NOT ("khyber" OR "peshawar" OR "mcmaster")
-
+``
+https://openalex.org/works?filter=raw_affiliation_strings.search:
+ ("KTH" OR
+ (("roy inst" OR
+ "royal in-stitute" OR
+ "royal inititute" OR
+ "royal institut" OR
+ "royal institute" OR
+ "royal institite" OR
+ "royal institution" OR
+ "royal institue" OR
+ "royal insititu" OR
+ "royal insitute" OR
+ "royal inst" OR
+ "royal inst." OR
+ "royal intitute" OR
+ "royal istitute" OR
+ "royal lnstitute" OR
+ "royal lnstitufe" OR
+ "royal lnstltute") AND "tech") OR
+ (("kgl" OR
+ "kgl." OR
+ "kungl" OR
+ "kungl." OR
+ "kungliga") AND "tekn") OR
+ "r inst of technol" OR
+ "r inst. of technol." OR
+ "r. inst. of tech." OR
+ "r. inst. of technol" OR
+ "r. inst. of technol." OR
+ "royal tech" OR
+ "institute of technology stockholm" OR
+ "royal of technology" OR
+ "royal school of technology" OR
+ "royal swedish institute of technology" OR
+ "royal university of technology" OR
+ "royal college of technology" OR
+ "royalinstitute" OR
+ "alfven" OR
+ "alfvén" OR
+ "10044 stockholm" OR
+ "100 44 stockholm") NOT ("khyber" OR
+ "peshawar" OR
+ "mcmaster")
+``
 
 GUI
 ```
