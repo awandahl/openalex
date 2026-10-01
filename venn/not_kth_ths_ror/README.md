@@ -25,6 +25,7 @@ import re
 import os
 from datetime import datetime
 import pandas as pd
+```
 
 # Configuration settings
 START_YEAR = 2024
